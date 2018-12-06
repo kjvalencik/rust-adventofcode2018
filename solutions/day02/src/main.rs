@@ -16,7 +16,7 @@ where
 			.map(|line| line.expect("Failed to read line"))
 			.collect::<Vec<_>>();
 
-		Day02 { lines }
+		Day02::new(lines)
 	}
 }
 

@@ -17,7 +17,7 @@ where
 			.map(|line| line.parse::<i64>().expect("Failed to parse number"))
 			.collect::<Vec<_>>();
 
-		Day01 { nums }
+		Day01::new(nums)
 	}
 }
 
