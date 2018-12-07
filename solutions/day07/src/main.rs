@@ -58,7 +58,7 @@ impl Day07 {
 	fn multi_worker(&self, base_time: u32, num_workers: usize) -> u32 {
 		let mut items = self.dependencies.clone();
 		let mut workers = vec![Worker::new(); num_workers];
-        let mut remaining = items.len();
+		let mut remaining = items.len();
 		let mut total = 0;
 
 		while remaining > 0 {
@@ -107,7 +107,7 @@ impl Day07 {
 							});
 
 							w.id = None;
-                            remaining -= 1;
+							remaining -= 1;
 						}
 					}
 				});
