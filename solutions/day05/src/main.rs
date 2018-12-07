@@ -8,7 +8,7 @@ fn remove_pair(n: usize, s: &str) -> Option<(usize, String)> {
 		if a != b && a.to_uppercase() == b.to_uppercase() {
 			let prefix = &s[..i];
 			let postfix = &s[(i + 2)..];
-            let result = format!("{}{}", prefix, postfix);
+			let result = format!("{}{}", prefix, postfix);
 
 			return Some((i, result));
 		}
@@ -19,32 +19,30 @@ fn remove_pair(n: usize, s: &str) -> Option<(usize, String)> {
 
 fn reaction(initial: &str) -> String {
 	let mut prev = initial.to_owned();
-    let mut prev_n = 0;
+	let mut prev_n = 0;
 
 	while let Some((n, next)) = remove_pair(prev_n, &prev) {
 		prev = next;
-        prev_n = if n > 0 { n - 1 } else { 0 };
+		prev_n = if n > 0 { n - 1 } else { 0 };
 	}
 
 	prev
 }
 
 fn improve_reaction(s: &str) -> String {
-    let lower = "abcdefghijklmnopqrstuvwxyz".chars().collect::<Vec<_>>();
-    let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect::<Vec<_>>();
+	let lower = "abcdefghijklmnopqrstuvwxyz".chars().collect::<Vec<_>>();
+	let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect::<Vec<_>>();
 
-    (0..lower.len())
-        .map(|i| {
-            let a = lower[i];
-            let b = upper[i];
+	(0..lower.len())
+		.map(|i| {
+			let a = lower[i];
+			let b = upper[i];
 
-            s.chars()
-                .filter(|&c| c != a && c != b)
-                .collect::<String>()
-        })
-        .map(|s| reaction(&s))
-        .min_by_key(|r| r.len())
-        .expect("Expected there to be at least one reaction")
+			s.chars().filter(|&c| c != a && c != b).collect::<String>()
+		})
+		.map(|s| reaction(&s))
+		.min_by_key(|r| r.len())
+		.expect("Expected there to be at least one reaction")
 }
 
 fn main() {
@@ -54,11 +52,11 @@ fn main() {
 		.read_to_string(&mut buf)
 		.expect("Failed to read from stdin");
 
-    let result = reaction(buf.trim());
-    let improved = improve_reaction(buf.trim());
+	let result = reaction(buf.trim());
+	let improved = improve_reaction(buf.trim());
 
 	println!("Number of units: {}", result.len());
-    println!("Number of improved units: {}", improved.len());
+	println!("Number of improved units: {}", improved.len());
 }
 
 #[cfg(test)]
