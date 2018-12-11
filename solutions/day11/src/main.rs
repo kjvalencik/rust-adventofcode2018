@@ -1,3 +1,4 @@
+use std::cmp;
 use std::env;
 
 #[derive(Debug)]
@@ -60,10 +61,26 @@ impl Day11 {
 	}
 
 	fn largest_power_grid(&self) -> ((usize, usize), usize) {
-		(1..300)
-			.map(|n| (self.largest_power(n), n))
-			.max_by_key(|((_, total_power), _)| *total_power)
-			.map(|((xy, _), n)| (xy, n))
+		(1..301)
+			.flat_map(|x| (1..301).map(move |y| (x, y)))
+			.flat_map(|(x, y)| {
+				let max_size = 302 - cmp::max(x, y);
+				let mut total = 0;
+
+				(1..max_size).map(move |n| {
+					let row = (x..(x + n))
+						.fold(0, |acc, x| acc + self.cell(x, y + n - 1));
+
+					let col = ((y + 1)..(y + n))
+						.fold(0, |acc, y| acc + self.cell(x + n - 1, y));
+
+					total += row + col;
+
+					((x, y), n, total)
+				})
+			})
+			.max_by_key(|(_, _, total_power)| *total_power)
+			.map(|(xy, n, _)| (xy, n))
 			.unwrap_or_else(|| ((0, 0), 0))
 	}
 }
@@ -114,7 +131,8 @@ mod tests {
 		assert_eq!(Day11::new(42).largest_power(12).0, (232, 251));
 	}
 
-	// This is an expensive test since it brute forces the entire grid
+	// Skip test because it requires `--release` to run in a reasonable amount
+	// of time.
 	#[test]
 	#[ignore]
 	fn largest_power_grid() {
