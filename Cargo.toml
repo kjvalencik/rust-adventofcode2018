@@ -11,4 +11,5 @@ members = [
 	"solutions/day09",
 	"solutions/day10",
 	"solutions/day11",
+	"solutions/day12",
 ]
